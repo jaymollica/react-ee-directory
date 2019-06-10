@@ -17,6 +17,27 @@ window.employeeService = (function () {
 
     return promiseEmployee;
 
+  }
+
+  var findById = function (id) {
+    var employee = null;
+    var l = employees.length;
+    for (var i = 0; i < l; i++) {
+        if (employees[i].id == id) {
+            employee = employees[i];
+            break;
+        }
+    }
+
+    let promiseEmployee =  new Promise(function(resolve, reject) {
+      resolve(employee);
+    });
+
+    promiseEmployee.then(
+      function(result) { return result; },
+    );
+
+    return promiseEmployee;
   },
 
   employees = [
@@ -35,7 +56,8 @@ window.employeeService = (function () {
   ];
 
   return {
-      findByName: findByName,
+    findById: findById,
+    findByName: findByName,
   };
 
 }());
