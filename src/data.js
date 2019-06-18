@@ -38,6 +38,21 @@ window.employeeService = (function () {
     );
 
     return promiseEmployee;
+  }
+
+  var addEmployee = function(employee) {
+    employee.id = employees.length + 1;
+    employees = [...employees, employee];
+  }
+
+  var updateEmployee = function(employee) {
+    console.log(employee);
+    console.log(employee.id);
+    for (var key in employees) {
+        if (employees[key].id == employee.id) {
+          console.log(employees[key]);
+        }
+    }
   },
 
   employees = [
@@ -58,6 +73,9 @@ window.employeeService = (function () {
   return {
     findById: findById,
     findByName: findByName,
+    addEmployee: addEmployee,
+    updateEmployee: updateEmployee,
+    employees: employees,
   };
 
 }());
