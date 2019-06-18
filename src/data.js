@@ -1,8 +1,8 @@
 window.employeeService = (function () {
 
   var findByName = function(term) {
-    
-    var results = employees.filter(function (element) {
+    var storedEmployees = JSON.parse(localStorage.getItem('employees'));
+    var results = storedEmployees.filter(function (element) {
         var fullName = element.firstName + " " + element.lastName;
         return fullName.toLowerCase().indexOf(term.toLowerCase()) > -1;
     });
@@ -20,11 +20,12 @@ window.employeeService = (function () {
   }
 
   var findById = function (id) {
+    var storedEmployees = JSON.parse(localStorage.getItem('employees'));
     var employee = null;
-    var l = employees.length;
+    var l = storedEmployees.length;
     for (var i = 0; i < l; i++) {
-        if (employees[i].id == id) {
-            employee = employees[i];
+        if (storedEmployees[i].id == id) {
+            employee = storedEmployees[i];
             break;
         }
     }
@@ -41,20 +42,53 @@ window.employeeService = (function () {
   }
 
   var addEmployee = function(employee) {
-    employee.id = employees.length + 1;
-    employees = [...employees, employee];
+    var storedEmployees = JSON.parse(localStorage.getItem('employees'));
+    employee.id = storedEmployees.length + 1;
+    storedEmployees.push(employee);
+    localStorage.setItem('employees', JSON.stringify(storedEmployees));
+    var allEmployees = localStorage.getItem('employees');
   }
 
   var updateEmployee = function(employee) {
-    console.log(employee);
-    console.log(employee.id);
-    for (var key in employees) {
-        if (employees[key].id == employee.id) {
-          console.log(employees[key]);
-        }
+    var storedEmployees = JSON.parse(localStorage.getItem('employees'));
+    for (var key in storedEmployees) {
+      if (storedEmployees[key].id == employee.id) {
+        storedEmployees[key] = employee;
+        localStorage.setItem('employees', JSON.stringify(storedEmployees));
+        break;
+      }
     }
+  }
+
+  var deleteEmployee = function(employee) {
+    var storedEmployees = JSON.parse(localStorage.getItem('employees'));
+    for (var key in storedEmployees) {
+      if (storedEmployees[key].id == employee.id) {
+        storedEmployees.splice(key,1);
+        localStorage.setItem('employees', JSON.stringify(storedEmployees));
+        break;
+      }
+    }
+  }
+
+  var getEmployees = function() {
+    var allEmployees = JSON.parse(localStorage.getItem('employees'));
+    return allEmployees;
+  }
+
+  var init = function() {
+
+    //localStorage.clear();
+
+    // only prepopulate localstorage if employees are not present
+    if (localStorage.getItem("employees") === null) {
+      localStorage.setItem('employees', JSON.stringify(employees));
+    }
+    var allEmployees = JSON.parse(localStorage.getItem('employees'));
+    console.log(allEmployees);
   },
 
+  // some seed data for the directory
   employees = [
     {"id": 1, "firstName": "James", "lastName": "King", "managerId": 0, "managerName": "", "reports": 4, "title": "President and CEO", "department": "Corporate", "mobilePhone": "617-000-0001", "officePhone": "781-000-0001", "email": "jking@fakemail.com", "city": "Boston, MA", "pic": "james_king.jpg", "twitterId": "@fakejking", "blog": "http://coenraets.org"},
     {"id": 2, "firstName": "Julie", "lastName": "Taylor", "managerId": 1, "managerName": "James King", "reports": 2, "title": "VP of Marketing", "department": "Marketing", "mobilePhone": "617-000-0002", "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA", "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"},
@@ -70,12 +104,15 @@ window.employeeService = (function () {
     {"id": 12, "firstName": "Steven", "lastName": "Wells", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "Software Architect", "department": "Engineering", "mobilePhone": "617-000-0012", "officePhone": "781-000-0012", "email": "swells@fakemail.com", "city": "Boston, MA", "pic": "steven_wells.jpg", "twitterId": "@fakeswells", "blog": "http://coenraets.org"}
   ];
 
+  init();
+
   return {
     findById: findById,
     findByName: findByName,
     addEmployee: addEmployee,
     updateEmployee: updateEmployee,
-    employees: employees,
+    getEmployees: getEmployees,
+    deleteEmployee: deleteEmployee,
   };
 
 }());

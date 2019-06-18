@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './data.js';
 import AddEmployeeForm from './forms/addEmployee.js';
 import UpdateEmployeeForm from './forms/updateEmployee.js';
+import DeleteEmployeeForm from './forms/deleteEmployee.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -59,6 +60,21 @@ class UpdateEmployee extends Component {
   
 }
 
+class DeleteEmployee extends Component {
+  state = {
+    id: this.props.match.params.id,
+  }
+
+  render() {
+    return (
+      <div className={"container"}>
+        <h2>Delete Employee</h2>
+        <DeleteEmployeeForm service={window.employeeService} id={this.state.id} />
+      </div>
+    );
+  }
+}
+
 class Header extends Component {
   render() {
       return <h1 className="title">{this.props.text}</h1>
@@ -97,7 +113,7 @@ class EmployeeListItem extends Component {
             </a>
           </td>
           <td>
-            <a className={"btn btn-danger"} herf={"delete/" + this.props.employee.id}>
+            <a className={"btn btn-danger"} href={"delete/" + this.props.employee.id}>
               Delete
             </a>
           </td>
@@ -108,22 +124,28 @@ class EmployeeListItem extends Component {
 
 class EmployeeList extends Component {
   render() {
-    let items = this.props.employees.map(employee => {
+    if(this.props.employees.length === 0) {
       return (
-        <EmployeeListItem key={employee.id} employee={employee} />
+        <p>Don&rsquo;t see who you&rsquo;re looking for? Add them <a href={"/add"}>here</a>.</p>
       );
-    });
-    return (
-      <table className={"table"}>
-          {items}
-      </table>
-    );
+    } else {
+      let items = this.props.employees.map(employee => {
+        return (
+          <EmployeeListItem key={employee.id} employee={employee} />
+        );
+      });
+      return (
+        <table className={"table"}>
+            {items}
+        </table>
+      );
+    }
   };
 }
 
 class HomePage extends Component {
   state = {
-    employees: this.props.service.employees,
+    employees: this.props.service.getEmployees(),
   };
 
   searchHandler = (term) => {
@@ -160,12 +182,12 @@ class EmployeeDetail extends Component {
         <Header text="Employee Details"/>
         <h2>{this.state.employee.firstName} {this.state.employee.lastName}</h2>
         <p>{this.state.employee.title} &middot; {this.state.employee.department}</p>
-        <p><a href={"mailto:"+this.state.employee.email}>this.state.employee.email</a></p>
+        <p><a href={"mailto:"+this.state.employee.email}>{this.state.employee.email}</a></p>
         <div>
           <a className={"btn btn-primary"} href={"/update/" + this.state.employee.id}>
             Update
           </a>
-          <a className={"btn btn-danger"} herf={"/delete/" + this.state.employee.id}>
+          <a className={"btn btn-danger"} href={"/delete/" + this.state.employee.id}>
             Delete
           </a>
           <a className={"btn btn-link"} href="/">
@@ -185,6 +207,7 @@ function AppRouter() {
         <Route path="/employees/:id" component={EmployeePage} />
         <Route path="/add" component={AddEmployee} />
         <Route path="/update/:id" component={UpdateEmployee} />
+        <Route path="/delete/:id" component={DeleteEmployee} />
       </div>
     </Router>
   );

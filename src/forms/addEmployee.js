@@ -9,6 +9,8 @@ class AddEmployeeForm extends React.Component {
       title: '',
       department: '',
       email: '',
+      submitValue: 'Submit',
+      submitDisabled: false,
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -23,6 +25,10 @@ class AddEmployeeForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.service.addEmployee(this.state);
+    this.setState({
+      submitValue: 'Submitted!',
+      submitDisabled: true,
+    });
   }
 
   handleEmailChange(event) {
@@ -68,7 +74,7 @@ class AddEmployeeForm extends React.Component {
           <label>Department</label>
           <input type="text" name="department" className={"form-control"} value={this.state.department} onChange={this.handleDepartmentChange} />
         </div>
-        <button type="submit" className={"btn btn-primary"}>Submit</button> <a className={"btn btn-link"} href="/">Cancel</a>
+        <button type="submit" disabled={this.state.submitDisabled} className={"btn btn-primary"}>{this.state.submitValue}</button> <a className={"btn btn-link"} href="/">Home</a>
       </form>
     );
   }
