@@ -1,4 +1,5 @@
 import React from 'react'
+import defaultImg from '../img/default.png';
 
 class UpdateEmployeeForm extends React.Component {
 
@@ -13,6 +14,7 @@ class UpdateEmployeeForm extends React.Component {
       department: '',
       email: '',
       id: '',
+      img: '',
       submitValue: 'Submit',
     };
 
@@ -24,6 +26,7 @@ class UpdateEmployeeForm extends React.Component {
         department: result.department,
         email: result.email,
         id: result.id,
+        img: result.img,
       });
     }.bind(this));
 
@@ -32,6 +35,7 @@ class UpdateEmployeeForm extends React.Component {
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
+    this.handleImgChange = this.handleImgChange.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -42,6 +46,14 @@ class UpdateEmployeeForm extends React.Component {
     this.setState(
       {
         submitValue: 'Updated!',
+      }
+    );
+  }
+
+  handleImgChange(event) {
+    this.setState(
+      {
+        img: event.target.value
       }
     );
   }
@@ -87,9 +99,20 @@ class UpdateEmployeeForm extends React.Component {
   }
 
   render() {
-    console.log(this);
+
+    if("img" in this.state){
+      var imgSrc = this.state.img;
+    }
+    else {
+      var imgSrc = defaultImg;
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
+        <div className={"form-group"}>
+          <img className={"ee-img"} src={this.state.img} />
+          <input type="text" name="img" className={"form-control"} value={this.state.img} onChange={this.handleImgChange} />
+        </div>
         <div className={"form-group"}>
           <label>First Name</label>
           <input type="text" name="firstName" className={"form-control"} value={this.state.firstName} onChange={this.handleFirstNameChange} />

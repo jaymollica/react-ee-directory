@@ -203,22 +203,39 @@ class EmployeeDetail extends Component {
   };
 
   render() {
+
+    if("img" in this.state.employee){
+      var imgSrc = this.state.employee.img;
+    }
+    else {
+      var imgSrc = defaultImg;
+    }
+
     return (
       <div className={"container"}>
         <Header text="Employee Details"/>
-        <h2>{this.state.employee.firstName} {this.state.employee.lastName}</h2>
-        <p>{this.state.employee.title} &middot; {this.state.employee.department}</p>
-        <p><a href={"mailto:"+this.state.employee.email}>{this.state.employee.email}</a></p>
-        <div>
-          <a className={"btn btn-primary"} href={"/update/" + this.state.employee.id}>
-            Update
-          </a>
-          <a className={"btn btn-danger"} href={"/delete/" + this.state.employee.id}>
-            Delete
-          </a>
-          <a className={"btn btn-link"} href="/">
-            Home
-          </a>
+        <div className={"fluid-container"}>
+          <div className={"row"}>
+            <div className={"col-3"}>
+              <img className={"ee-img"} src={imgSrc} />
+            </div>
+            <div className={"col-9"}>
+              <h2>{this.state.employee.firstName} {this.state.employee.lastName}</h2>
+              <p>{this.state.employee.title} &middot; {this.state.employee.department}</p>
+              <p><a href={"mailto:"+this.state.employee.email}>{this.state.employee.email}</a></p>
+              <div>
+                <a className={"btn btn-primary"} href={"/update/" + this.state.employee.id}>
+                  Update
+                </a>
+                <a className={"btn btn-danger"} href={"/delete/" + this.state.employee.id}>
+                  Delete
+                </a>
+                <a className={"btn btn-link"} href="/">
+                  Home
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
