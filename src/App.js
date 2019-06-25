@@ -6,6 +6,7 @@ import UpdateEmployeeForm from './forms/updateEmployee.js';
 import DeleteEmployeeForm from './forms/deleteEmployee.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import defaultImg from './img/default.png';
 
 class Index extends Component {
   render() {
@@ -77,8 +78,12 @@ class DeleteEmployee extends Component {
 
 class Header extends Component {
   render() {
-      return <h1 className="title">{this.props.text}</h1>
-  };
+    return (
+      <div>
+        <h1 className={"title"}>{this.props.text}</h1>
+      </div>
+    );
+  }
 }
 
 class SearchBar extends Component {
@@ -100,19 +105,33 @@ class SearchBar extends Component {
 
 class EmployeeListItem extends Component {
   render() {
+
+    if("img" in this.props.employee){
+      var imgSrc = this.props.employee.img;
+    }
+    else {
+      var imgSrc = defaultImg;
+    }
+
     return (
         <tr>
+          <td>
+            <img className={"ee-list-img"} src={imgSrc} />
+          </td>
           <td>
             <a href={"employees/" + this.props.employee.id}>
                 {this.props.employee.firstName} {this.props.employee.lastName}
             </a>
           </td>
           <td>
+            <p>{this.props.employee.department}</p>
+          </td>
+          <td className={"text-right"}>
             <a className={"btn btn-primary"} href={"update/" + this.props.employee.id}>
               Update
             </a>
           </td>
-          <td>
+          <td className={"text-right"}>
             <a className={"btn btn-danger"} href={"delete/" + this.props.employee.id}>
               Delete
             </a>
@@ -136,7 +155,14 @@ class EmployeeList extends Component {
       });
       return (
         <table className={"table"}>
+          <tbody>
             {items}
+            <tr>
+              <td colSpan="5" className={"text-right"}>
+                <a href="/add" className={"btn btn-success btn-add"}>Add Employee</a>
+              </td>
+            </tr>
+          </tbody>
         </table>
       );
     }

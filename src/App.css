@@ -3,3 +3,19 @@
 .btn {
   margin-right: 5px;
 }
+
+.ee-img {
+  height: 128px;
+  width: 128px;
+  margin-bottom: 12px;
+}
+
+.ee-list-img {
+  height: 50px;
+  width: 50px;
+}
+
+.table td {
+  padding-right: 0;
+  padding-left: 0;
+}

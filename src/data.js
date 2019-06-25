@@ -41,9 +41,30 @@ window.employeeService = (function () {
     return promiseEmployee;
   }
 
+  var findByDepartment = function(department) {
+    var storedEmployees = JSON.parse(localStorage.getItem('employees'));
+    var results = storedEmployees.filter(function (element) {
+        var eeDept = element.department;
+        return eeDept.toLowerCase().indexOf(department.toLowerCase()) > -1;
+    });
+
+    let promiseEmployees =  new Promise(function(resolve, reject) {
+      resolve(results);
+    });
+
+    promiseEmployees.then(
+      function(result) { return result; },
+    );
+
+    return promiseEmployees;
+  }
+
   var addEmployee = function(employee) {
     var storedEmployees = JSON.parse(localStorage.getItem('employees'));
-    employee.id = storedEmployees.length + 1;
+    const maxId = storedEmployees.reduce(
+      (max, storedEmployees) => (storedEmployees.id > max ? storedEmployees.id : max), storedEmployees[0].id
+    );
+    employee.id = maxId + 1;
     storedEmployees.push(employee);
     localStorage.setItem('employees', JSON.stringify(storedEmployees));
     var allEmployees = localStorage.getItem('employees');
@@ -76,16 +97,28 @@ window.employeeService = (function () {
     return allEmployees;
   }
 
+  var getNewEmployee = function() {
+
+    var eeURL = "https://uifaces.co/api?limit=1&random";
+
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(this.responseText);
+      };
+      xhr.onerror = reject;
+      xhr.open('GET', eeURL);
+      xhr.setRequestHeader("X-API-KEY","bbe4b56b32f2e0343e04be4d80c35c");
+      xhr.send();
+    });
+  }
+
   var init = function() {
-
     //localStorage.clear();
-
     // only prepopulate localstorage if employees are not present
     if (localStorage.getItem("employees") === null) {
       localStorage.setItem('employees', JSON.stringify(employees));
     }
-    var allEmployees = JSON.parse(localStorage.getItem('employees'));
-    console.log(allEmployees);
   },
 
   // some seed data for the directory
@@ -112,6 +145,7 @@ window.employeeService = (function () {
     addEmployee: addEmployee,
     updateEmployee: updateEmployee,
     getEmployees: getEmployees,
+    getNewEmployee: getNewEmployee,
     deleteEmployee: deleteEmployee,
   };
 

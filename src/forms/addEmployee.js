@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import defaultImg from '../img/default.png';
 
 class AddEmployeeForm extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class AddEmployeeForm extends React.Component {
       title: '',
       department: '',
       email: '',
+      img: defaultImg,
       submitValue: 'Submit',
       submitDisabled: false,
     };
@@ -18,6 +20,9 @@ class AddEmployeeForm extends React.Component {
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
+    this.handleImgChange = this.handleImgChange.bind(this);
+
+    this.handleNewRandomEEClick = this.handleNewRandomEEClick.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -29,6 +34,10 @@ class AddEmployeeForm extends React.Component {
       submitValue: 'Submitted!',
       submitDisabled: true,
     });
+  }
+
+  handleImgChange(event) {
+    this.setState({img: event.target.value});
   }
 
   handleEmailChange(event) {
@@ -51,9 +60,36 @@ class AddEmployeeForm extends React.Component {
     this.setState({department: event.target.value});
   }
 
+  handleNewRandomEEClick(event) {
+    event.preventDefault();
+    var that = this;
+    var newEE = this.props.service.getNewEmployee().then(function(result) {
+      var newEE = JSON.parse(result);
+      var names = newEE[0].name.split(" ");
+      that.setState({
+        firstName: names[0],
+        lastName: names[1],
+        title: newEE[0].position,
+        department: '',
+        email: newEE[0].email,
+        img: newEE[0].photo,
+      });
+    })
+    .catch(function() {
+      // An error occurred
+    });
+  }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <div className={"form-group"}>
+          <button type="submit" className={"btn btn-success"} onClick={this.handleNewRandomEEClick}>Generate Random Employee</button>
+        </div>
+        <div className={"form-group"}>
+          <img className={"ee-img"} src={this.state.img} />
+          <input type="text" name="img" className={"form-control"} value={this.state.img} onChange={this.handleImgChange} />
+        </div>
         <div className={"form-group"}>
           <label>First Name</label>
           <input type="text" name="firstName" className={"form-control"} value={this.state.firstName} onChange={this.handleFirstNameChange} />
