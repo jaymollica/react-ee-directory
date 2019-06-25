@@ -5,14 +5,12 @@
 }
 
 .ee-img {
-  height: 128px;
-  width: 128px;
+  max-height: 128px;
   margin-bottom: 12px;
 }
 
 .ee-list-img {
-  height: 50px;
-  width: 50px;
+  max-height: 50px;
 }
 
 .table td {

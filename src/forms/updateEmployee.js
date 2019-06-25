@@ -109,10 +109,12 @@ class UpdateEmployeeForm extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
+      
         <div className={"form-group"}>
           <img className={"ee-img"} src={this.state.img} />
           <input type="text" name="img" className={"form-control"} value={this.state.img} onChange={this.handleImgChange} />
         </div>
+
         <div className={"form-group"}>
           <label>First Name</label>
           <input type="text" name="firstName" className={"form-control"} value={this.state.firstName} onChange={this.handleFirstNameChange} />

@@ -109,6 +109,8 @@ window.employeeService = (function () {
       xhr.onerror = reject;
       xhr.open('GET', eeURL);
       xhr.setRequestHeader("X-API-KEY","bbe4b56b32f2e0343e04be4d80c35c");
+      xhr.setRequestHeader("Cache-Control", "no-cache");
+      xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
       xhr.send();
     });
   }
