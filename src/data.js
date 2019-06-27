@@ -128,7 +128,6 @@ window.employeeService = (function () {
   }
 
   var init = function() {
-    //localStorage.clear();
     // only prepopulate localstorage if employees are not present
     if (localStorage.getItem("employees") === null) {
       localStorage.setItem('employees', JSON.stringify(employees));
