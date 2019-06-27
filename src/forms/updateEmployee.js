@@ -109,7 +109,7 @@ class UpdateEmployeeForm extends React.Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-      
+
         <div className={"form-group"}>
           <img className={"ee-img"} src={this.state.img} />
           <input type="text" name="img" className={"form-control"} value={this.state.img} onChange={this.handleImgChange} />
@@ -140,6 +140,7 @@ class UpdateEmployeeForm extends React.Component {
           <input type="text" name="department" className={"form-control"} value={this.state.department} onChange={this.handleDepartmentChange}/>
         </div>
         <button type="submit" className={"btn btn-primary"}>{this.state.submitValue}</button> <a className={"btn btn-link"} href="/">Home</a>
+
       </form>
     );
   }

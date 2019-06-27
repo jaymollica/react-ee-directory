@@ -63,16 +63,19 @@ class AddEmployeeForm extends React.Component {
   handleNewRandomEEClick(event) {
     event.preventDefault();
     var that = this;
+
     var newEE = this.props.service.getNewEmployee().then(function(result) {
-      var newEE = JSON.parse(result);
-      var names = newEE[0].name.split(" ");
+      var newEE = result;
+      var names = newEE.name.split(" ");
       that.setState({
         firstName: names[0],
         lastName: names[1],
-        title: newEE[0].position,
-        department: '',
-        email: newEE[0].email,
-        img: newEE[0].photo,
+        title: newEE.position,
+        email: newEE.email,
+        department: newEE.department,
+        img: newEE.photo,
+        submitValue: 'Submit',
+        submitDisabled: false,
       });
     })
     .catch(function() {
@@ -87,7 +90,7 @@ class AddEmployeeForm extends React.Component {
           <button type="submit" className={"btn btn-success"} onClick={this.handleNewRandomEEClick}>Generate Random Employee</button>
         </div>
         <div className={"form-group"}>
-          <img className={"ee-img"} src={this.state.img} />
+          <img className={"ee-img"} src={this.state.img} onError={(e)=>{e.target.onerror = null; e.target.src=defaultImg}} />
           <input type="text" name="img" className={"form-control"} value={this.state.img} onChange={this.handleImgChange} />
         </div>
         <div className={"form-group"}>

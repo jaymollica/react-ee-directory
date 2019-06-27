@@ -114,29 +114,29 @@ class EmployeeListItem extends Component {
     }
 
     return (
-        <tr>
-          <td>
-            <img className={"ee-list-img"} src={imgSrc} />
-          </td>
-          <td>
-            <a href={"employees/" + this.props.employee.id}>
-                {this.props.employee.firstName} {this.props.employee.lastName}
-            </a>
-          </td>
-          <td>
-            <p>{this.props.employee.department}</p>
-          </td>
-          <td className={"text-right"}>
-            <a className={"btn btn-primary"} href={"update/" + this.props.employee.id}>
-              Update
-            </a>
-          </td>
-          <td className={"text-right"}>
-            <a className={"btn btn-danger"} href={"delete/" + this.props.employee.id}>
-              Delete
-            </a>
-          </td>
-        </tr>
+      <tr>
+        <td>
+          <img className={"ee-list-img"} src={imgSrc} onError={(e)=>{e.target.onerror = null; e.target.src=defaultImg}}  />
+        </td>
+        <td>
+          <a href={"employees/" + this.props.employee.id}>
+              {this.props.employee.firstName} {this.props.employee.lastName}
+          </a>
+        </td>
+        <td>
+          <p>{this.props.employee.department}</p>
+        </td>
+        <td className={"text-right"}>
+          <a className={"btn btn-primary"} href={"update/" + this.props.employee.id}>
+            Update
+          </a>
+        </td>
+        <td className={"text-right"}>
+          <a className={"btn btn-danger"} href={"delete/" + this.props.employee.id}>
+            Delete
+          </a>
+        </td>
+      </tr>
     );
   };
 }
